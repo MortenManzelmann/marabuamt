@@ -1,0 +1,32 @@
+{
+  "name": "marabuamt",
+  "version": "1.0.0",
+  "description": "Homepage of the mighty marabuians",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MortenManzelmann/marabuamt.git"
+  },
+  "keywords": [
+    "marabu",
+    "amt",
+    "marabuamt",
+    "uff",
+    "und",
+    "zu",
+    "idioten"
+  ],
+  "author": "Morten Manzelmann",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MortenManzelmann/marabuamt/issues"
+  },
+  "homepage": "https://github.com/MortenManzelmann/marabuamt#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "pug": "^2.0.3"
+  }
+}
