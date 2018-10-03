@@ -1,6 +1,7 @@
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
+var bodyParser = require('body-parser')
 
 // Connect to DB
 mongoose.connect('mongodb://localhost/node_marabuamt')
@@ -25,6 +26,15 @@ var Marabus = require('./models/marabu')
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
+
+// Assets folder
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Home route
 app.get('/', function(req, res) {
 	Marabus.find({}, function(err, marabus){
@@ -39,14 +49,34 @@ app.get('/', function(req, res) {
 	})
 })
 
+app.get('/post/:id', function(req, res){
+
+	Marabus.findById(req.params.id, function(err, post){
+		res.render('post', {
+			post:post
+		})
+	})
+})
+
 // Add article route
 app.get('/add', (req, res) => res.render('add',{
 	title: 'Add stuff'
 }))
 
 app.post('/add', function(req,res) {
-	console.log('Abgeschickt');
-	return;
+	let marabu = new Marabus;
+	marabu.title = req.body.title;
+	marabu.ort = req.body.ort;
+	marabu.message = req.body.message;
+
+	marabu.save(function(err){
+		if (err) {
+			console.log(err);
+			return;
+		}else{
+			res.redirect('/');
+		}
+	});
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

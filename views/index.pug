@@ -2,6 +2,7 @@ extends layout
 
 block content
 		h1 Willkommen beim #{title}.
-		ul
+		ul.list-group
 			each marabu, i in marabus
-				li= marabu.title
+				li.list-group-item
+					a(href="/post/" + marabu._id)= marabu.message
