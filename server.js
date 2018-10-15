@@ -49,11 +49,23 @@ app.get('/', function(req, res) {
 	})
 })
 
+//Display single post
 app.get('/post/:id', function(req, res){
 
 	Marabus.findById(req.params.id, function(err, post){
 		res.render('post', {
 			post:post
+		})
+	})
+})
+
+//Edit single post
+app.get('/post/edit/:id', function(req, res){
+
+	Marabus.findById(req.params.id, function(err, post){
+		res.render('edit_post', {
+			title: 'Edit this Post',
+			post: post
 		})
 	})
 })
@@ -77,6 +89,35 @@ app.post('/add', function(req,res) {
 			res.redirect('/');
 		}
 	});
+})
+
+// Update Marabu
+app.post('/post/edit/:id', function(req,res) {
+	let marabu = {};
+	marabu.title = req.body.title;
+	marabu.ort = req.body.ort;
+	marabu.message = req.body.message;
+
+	let query = {_id:req.params.id}
+	Marabus.update(query, marabu, function(err){
+		if (err) {
+			console.log(err);
+			return;
+		}else{
+			res.redirect('/');
+		}
+	});
+})
+
+app.delete('/post/:id', function(req, res){
+	let query = {_id:req.params.id}
+
+	Marabus.remove(query, function(err){
+		if (err) {
+			console.log(err);
+		}
+		res.send('Success');
+	})
 })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))

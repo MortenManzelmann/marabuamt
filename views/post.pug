@@ -4,3 +4,6 @@ block content
 		h1= post.title
 		p= post.message
 		h5 Writen in #{post.ort}
+		hr
+		a.btn.btn-primary(href="/post/edit/"+post._id) Edit
+		a.btn.btn-danger.delete-post(href='#', data-id=post._id) Delete
