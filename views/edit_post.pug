@@ -1,0 +1,15 @@
+extends layout
+
+block content
+		h1 Willkommen beim #{title}.
+		form(method='POST', action=post._id)
+			#form-group
+				label Title:
+				input.form-control(name='title', type='text', value=post.title)
+			#form-group
+				label Ort:
+				input.form-control(name='ort', type='text', value=post.ort)
+			#form-group
+				label Message:
+				textarea.form-control(name='message')=value=post.message
+			input.btn.btn-primary(type='submit',value='Abschicken')
