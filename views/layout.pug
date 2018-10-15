@@ -16,9 +16,14 @@ html
 							| Home 
 							span.sr-only (current)
 					li.nav-item
-						a.nav-link(href='/add') Add Entry
+						a.nav-link(href='/posts/add') Add Entry
 
 		.container
+			!=  messages('message', locals)
+			if errors
+				each error, i in errors
+					div(class="alert alert-danger") #{error.msg}
+				
 			block content
 			br
 			hl

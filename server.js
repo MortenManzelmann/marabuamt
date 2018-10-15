@@ -1,7 +1,10 @@
 const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
-var bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
+const expressValidator = require('express-validator');
+const flash = require('connect-flash');
+const session = require('express-session');
 
 // Connect to DB
 mongoose.connect('mongodb://localhost/node_marabuamt')
@@ -35,6 +38,37 @@ app.use(bodyParser.json())
 // Assets folder
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Express middleware for session
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}))
+
+//express middleware for messages
+app.use(require('connect-flash')());
+app.use(function (req, res, next) {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
+
+// Express Validator Middleware
+app.use(expressValidator({
+  errorFormatter: function(param, msg, value) {
+      var namespace = param.split('.')
+      , root    = namespace.shift()
+      , formParam = root;
+
+    while(namespace.length) {
+      formParam += '[' + namespace.shift() + ']';
+    }
+    return {
+      param : formParam,
+      msg   : msg,
+      value : value
+    };
+  }
+}));
 // Home route
 app.get('/', function(req, res) {
 	Marabus.find({}, function(err, marabus){
@@ -49,75 +83,7 @@ app.get('/', function(req, res) {
 	})
 })
 
-//Display single post
-app.get('/post/:id', function(req, res){
-
-	Marabus.findById(req.params.id, function(err, post){
-		res.render('post', {
-			post:post
-		})
-	})
-})
-
-//Edit single post
-app.get('/post/edit/:id', function(req, res){
-
-	Marabus.findById(req.params.id, function(err, post){
-		res.render('edit_post', {
-			title: 'Edit this Post',
-			post: post
-		})
-	})
-})
-
-// Add article route
-app.get('/add', (req, res) => res.render('add',{
-	title: 'Add stuff'
-}))
-
-app.post('/add', function(req,res) {
-	let marabu = new Marabus;
-	marabu.title = req.body.title;
-	marabu.ort = req.body.ort;
-	marabu.message = req.body.message;
-
-	marabu.save(function(err){
-		if (err) {
-			console.log(err);
-			return;
-		}else{
-			res.redirect('/');
-		}
-	});
-})
-
-// Update Marabu
-app.post('/post/edit/:id', function(req,res) {
-	let marabu = {};
-	marabu.title = req.body.title;
-	marabu.ort = req.body.ort;
-	marabu.message = req.body.message;
-
-	let query = {_id:req.params.id}
-	Marabus.update(query, marabu, function(err){
-		if (err) {
-			console.log(err);
-			return;
-		}else{
-			res.redirect('/');
-		}
-	});
-})
-
-app.delete('/post/:id', function(req, res){
-	let query = {_id:req.params.id}
-
-	Marabus.remove(query, function(err){
-		if (err) {
-			console.log(err);
-		}
-		res.send('Success');
-	})
-})
+let posts = require('./routes/posts');
+app.use('/posts', posts)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
