@@ -17,15 +17,17 @@ html
 							span.sr-only (current)
 					li.nav-item
 						a.nav-link(href='/posts/add') Add Entry
-
+		
 		.container
 			!=  messages('message', locals)
 			if errors
 				each error, i in errors
 					div(class="alert alert-danger") #{error.msg}
-				
+			
 			block content
 			br
+			hl
+				<iframe width="560" height="315" src="https://www.youtube.com/embed/C9jAduGWXA0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 			hl
 			footer
 				p Copyright &copy; 2018
