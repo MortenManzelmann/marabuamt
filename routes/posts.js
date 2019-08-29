@@ -61,7 +61,7 @@ router.post('/edit/:id', function(req,res) {
 })
 
 //delete single post
-router.get('/delete/:id', function(req, res){
+router.delete('/:id', function(req, res){
   let query = {_id:req.params.id}
 
   Marabus.remove(query, function(err){
