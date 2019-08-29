@@ -60,16 +60,19 @@ router.post('/edit/:id', function(req,res) {
     });
 })
 
-router.delete('/:id', function(req, res){
-    let query = {_id:req.params.id}
+//delete single post
+router.get('/delete/:id', function(req, res){
+  let query = {_id:req.params.id}
 
-    Marabus.remove(query, function(err){
-	if (err) {
-	    console.log(err);
-	}
-	res.send('Success');
-    })
+  Marabus.remove(query, function(err){
+    if (err) {
+      console.log(err);
+      return;
+    }
+    res.redirect('/');
+  })
 })
+
 //Display single post
 router.get('/:id', function(req, res){
 
@@ -83,11 +86,11 @@ router.get('/:id', function(req, res){
 //Edit single post
 router.get('/edit/:id', function(req, res){
 
-    Marabus.findById(req.params.id, function(err, post){
-	res.render('edit_post', {
+    Marabus.findById(req.params.id, (err, post) => {
+	     res.render('edit_post', {
 	    title: 'Edit this Post',
 	    post: post
-	})
+	   })
     })
 })
 
