@@ -1,0 +1,22 @@
+nav{
+  background-color: #666666;
+  font: 1.2em "Fira Sans", sans-serif;
+
+  &.navbar{
+    display: flex;
+    justify-content: flex-start;
+    .navbar-brand, .nav-link {
+      margin: 10px;
+      &:hover, &:active, &:link, &:visited{
+        color: #000;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.delete-button{
+  display: inline-block;
+  height: 100px;
+  width: 100px
+}

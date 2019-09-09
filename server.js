@@ -7,7 +7,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 
 // Connect to DB
-mongoose.connect('mongodb://172.21.0.2/node_marabuamt')
+mongoose.connect('mongodb://172.18.0.2/node_marabuamt')
 .catch(err => {
     console.log(err)
 })
