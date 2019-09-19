@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //Bring in the models
-var Marabus = require('../models/marabu')
+var Marabus = require('../src/models/marabu')
 
 
 

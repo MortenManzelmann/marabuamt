@@ -1,42 +1,46 @@
-const express = require('express')
-const path = require('path')
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const expressValidator = require('express-validator');
-const flash = require('connect-flash');
-const session = require('express-session');
+"use strict"
+
+import express from 'express';
+import path from 'path';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import expressValidator from 'express-validator';
+import flash from 'connect-flash';
+import session from 'express-session';
 
 // Connect to DB
 mongoose.connect('mongodb://172.18.0.2/node_marabuamt')
-.catch(err => {
+  .catch(err => {
     console.log(err)
-})
+  })
 
 var db = mongoose.connection
 
 //Check connection
-db.once('open', function(){
-	console.log('connected to MongoDB');
+db.once('open', function() {
+  console.log('connected to MongoDB');
 })
 
 //Check for DB errors
-db.on('error',function(err){
-	console.log(err);
-})
-//Init app
+db.on('error', function(err) {
+    console.log(err);
+  })
+  //Init app
 const app = express()
 const port = 3000
 
 //Bring in the models
 var Marabus = require('./models/marabu')
-//Load view engine
+  //Load view engine
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
-// parse application/json
+app.use(bodyParser.urlencoded({
+    extended: false
+  }))
+  // parse application/json
 app.use(bodyParser.json())
 
 // Assets folder
@@ -51,7 +55,7 @@ app.use(session({
 
 //express middleware for messages
 app.use(require('connect-flash')());
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   res.locals.messages = require('express-messages')(req, res);
   next();
 });
@@ -59,35 +63,35 @@ app.use(function (req, res, next) {
 // Express Validator Middleware
 app.use(expressValidator({
   errorFormatter: function(param, msg, value) {
-      var namespace = param.split('.')
-      , root    = namespace.shift()
-      , formParam = root;
+    var namespace = param.split('.'),
+      root = namespace.shift(),
+      formParam = root;
 
-    while(namespace.length) {
+    while (namespace.length) {
       formParam += '[' + namespace.shift() + ']';
     }
     return {
-      param : formParam,
-      msg   : msg,
-      value : value
+      param: formParam,
+      msg: msg,
+      value: value
     };
   }
 }));
 // Home route
 app.get('/', function(req, res) {
-	Marabus.find({}, function(err, marabus){
-		if(err){
-			console.log('err');
-		}else{
-			res.render('index',{
-			title: 'Marabuamt yeah',
-			marabus: marabus
-			})
-		}
-	})
+  Marabus.find({}, function(err, marabus) {
+    if (err) {
+      console.log('err');
+    } else {
+      res.render('index', {
+        title: 'Marabuamt yeah',
+        marabus: marabus
+      })
+    }
+  })
 })
 
-let posts = require('./routes/posts');
+let posts = require('../routes/posts');
 app.use('/posts', posts)
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
