@@ -1,37 +1,27 @@
 doctype html
 html
-	head
-		title #{title}
-		link(rel='stylesheet' href='/bower_components/bootstrap/dist/css/bootstrap.css' )
-		link(rel='stylesheet' href='/css/style.css' )
-	body
-		nav.navbar.navbar-expand-sm.navbar-dark.bg-dark
-			a.navbar-brand(href='#') Marabuamt
-			button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarsExample03', aria-controls='navbarsExample03', aria-expanded='false', aria-label='Toggle navigation')
-				span.navbar-toggler-icon
-			#navbarsExample03.collapse.navbar-collapse
-				ul.navbar-nav.mr-auto
-					li.nav-item.active
-						a.nav-link(href='/')
-							| Home 
-							span.sr-only (current)
-					li.nav-item
-						a.nav-link(href='/posts/add') Add Entry
-		
-		.container
-			!=  messages('message', locals)
-			if errors
-				each error, i in errors
-					div(class="alert alert-danger") #{error.msg}
-			
-			block content
-			br
-			hl
-				<iframe width="560" height="315" src="https://www.youtube.com/embed/C9jAduGWXA0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-			hl
-			footer
-				p Copyright &copy; 2018
-		
-		script(src='/bower_components/bootstrap/dist/js/bootstrap.js')
-		script(src='/bower_components/jquery/dist/jquery.js')
-		script(src='/js/main.js')
+  head
+    title #{title}
+  body
+    nav.navbar
+      div.home    
+        a.navbar-brand(href='/') Marabuamt
+      div.nav-item.active
+        a.nav-link(href='/')| Home 
+      div.nav-item
+        a.nav-link(href='/posts/add') Add Entry
+
+.container
+  !=  messages('message', locals)
+  if errors
+    each error, i in errors
+      div(class="alert alert-danger") #{error.msg}
+
+  block content
+  br
+  hl
+  hl
+  footer
+    p Copyright &copy; 2018
+
+script(src='/js/main.js')
